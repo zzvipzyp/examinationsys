@@ -1,5 +1,6 @@
 package com.xct.examinationsys.service;
 
+import com.xct.examinationsys.entity.Resource;
 import com.xct.examinationsys.entity.Role;
 
 import java.util.List;
@@ -15,4 +16,8 @@ public interface RoleService {
     void updateRole(Role role);
 
     void delete(int[] id);
+
+    List<Resource> getAccessedResources(Integer roleId);
+
+    void authorise(Integer[] ids, Integer roleId);
 }

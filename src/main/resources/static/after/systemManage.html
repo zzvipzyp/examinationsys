@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<title>layout 后台大布局 - Layui</title>
 		<link rel="stylesheet" href="../layui/css/layui.css">
 		<script type="text/javascript" src="../layui/layui.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+		<script type="text/javascript" src="../js/index.js"></script>
 	</head>
 
 	<body class="layui-layout-body">
@@ -56,16 +57,16 @@
 				<div class="layui-side-scroll">
 					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 					<ul id="menu" class="layui-nav layui-nav-tree"  lay-filter="test" style="margin-top: 100px;text-align: center">
-						<li class="layui-nav-item" ><a href="userList.html" target="myframe" style="height: 80px;padding-top: 30px"><b>用户列表</b></a></li>
-						<li class="layui-nav-item"><a href="roleList.html" target="myframe" style="height: 80px;padding-top: 30px"><b>身份列表</b></a></li>
-						<li class="layui-nav-item"><a href="permissionList.html" target="myframe" style="height: 80px;padding-top: 30px"><b>资源列表</b></a></li>
+						<li class="layui-nav-item" ><a href="javascript:loadPage('userList.html')"  style="height: 80px;padding-top: 30px"><b>用户列表</b></a></li>
+						<li class="layui-nav-item"><a href="javascript:loadPage('roleList.html')" style="height: 80px;padding-top: 30px"><b>身份列表</b></a></li>
+						<li class="layui-nav-item"><a href="javascript:loadPage('resourceList.html')"  style="height: 80px;padding-top: 30px"><b>资源列表</b></a></li>
 					</ul>
 				</div>
 			</div>
 
 			<div class="layui-body">
 				<!-- 内容主体区域 -->
-				<iframe name="myframe" width="100%" height="100%" frameborder="0" src="userList.html"></iframe>
+				<iframe name="myframe" id="myframe" width="100%" height="100%" frameborder="0" src="userList.html"></iframe>
 			</div>
 
 			<div class="layui-footer">
@@ -73,8 +74,6 @@
 				© layui.com - 底部固定区域
 			</div>
 		</div>
-		<script src="../layui/layui.js"></script>
-		<script type="text/javascript" src="../js/jquery-1.12.2.min.js" ></script>
 		<script>
 			//JavaScript代码区域
 			layui.use('element', function() {

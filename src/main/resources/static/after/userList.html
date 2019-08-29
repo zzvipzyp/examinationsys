@@ -15,10 +15,18 @@
 <div class="layui-form searchDiv">
     <div class="layui-form-item" style="margin-left: 350px">
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="title" name="title" placeholder="请输入名称">
+            <input type="text" class="layui-input" id="userId" name="userId" placeholder="学工号">
         </div>
         <div class="layui-input-inline">
-            <select name="speakerId" id="speaker">
+            <input type="text" class="layui-input" id="userName" name="userName" placeholder="用户名">
+        </div>
+
+        <div class="layui-input-inline">
+            <select name="roleId" id="roleId">
+                <option value="">选择身份</option>
+                <option value=1>考生</option>
+                <option value=2>教师</option>
+                <option value=3>管理员</option>
             </select>
         </div>
         <!--<div class="layui-input-inline">
@@ -92,11 +100,12 @@
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'}
-                ,{field:'userName', title:'用户名',  edit: 'text', width: 200}
-                ,{field:'roleName', title:'身份',  edit: 'text', width: 200}
-                ,{field:'userState', title:'状态',sort: true,width: 200}
-                ,{field:'email', title:'邮箱', width: 300}
-                ,{field:'telephone', title:'联系方式', width: 200, sort: true}
+                ,{field:'userName', title:'用户名',  edit: 'text', width: 150}
+                ,{field:'userId', title:'工号',  edit: 'text', width: 150, sort: true}
+                ,{field:'roleName', title:'身份',  edit: 'text', width: 150, sort: true}
+                ,{field:'userState', title:'状态',sort: true,width: 150}
+                ,{field:'email', title:'邮箱', width: 200}
+                ,{field:'telephone', title:'联系方式', width: 150}
                 ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
@@ -167,14 +176,14 @@
         var active = {
             reload: function(){
                 //执行重载
-                table.reload('videoTable', {
+                table.reload('userTable', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: { // 额外需要提交的参数\
-                        title: $("#title").val(),
-                        speakerId:$("#speaker").val(),
-                        courseId:$("#course").val()
+                        userName: $("#userName").val(),
+                        userId:$("#userId").val(),
+                        roleId:$("#roleId").val()
                     }
                 });
             }

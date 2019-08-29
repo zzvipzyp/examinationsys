@@ -32,10 +32,13 @@
         INNER JOIN t_user_state us ON u.user_state_id=us.user_sate_id
         <where>
             <if test="userName != null and userName != ''">
-                and user_name like CONCAT('%','${userName}','%')
+                and u.user_name like CONCAT('%','${userName}','%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and u.user_Id like CONCAT('%','${userId}','%')
             </if>
             <if test="roleId != null and roleId != ''">
-                and role_id=#{roleId}
+                and u.role_id=#{roleId}
             </if>
 <!--            <if test="courseId != null and courseId != ''">-->
 <!--                and course_id=#{courseId}-->

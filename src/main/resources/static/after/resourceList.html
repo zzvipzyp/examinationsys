@@ -9,7 +9,7 @@
 <body class="layui-layout-body">
 
 <div style="height: 70px;text-align: center; background-color: #C8EBFA;">
-    <h1 style="text-align: center;padding-top: 20px">角色管理</h1>
+    <h1 style="text-align: center;padding-top: 20px">资源列表</h1>
 </div>
 
 <table class="layui-hide" id="test" lay-filter="test" style="margin: 0px"></table>
@@ -67,14 +67,17 @@
         table.render({
             id: "roleTable"
             ,elem: '#test'
-            ,url:'../role/list.do'
+            ,url:'../resource/list.do'
             ,toolbar: '#toolbarDemo'
-            ,title: '主讲人数据表'
+            ,title: '资源列表'
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'xuhao', title:'序号',  fixed: 'left', type:"numbers"}
-                ,{field:'roleName', title:'角色名称',  edit: 'text'}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                ,{field:'name', title:'资源名称',  edit: 'text'}
+                ,{field:'parent', title:'父菜单',  edit: 'text'}
+                ,{field:'resourceUrl', title:'资源路径',  edit: 'text'}
+                ,{field:'resourceType', title:'资源类别',  edit: 'text'}
+                // ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -83,7 +86,7 @@
                 , first: false //不显示首页
                 , last: false //不显示尾页
                 , limit: 5
-                , limits: [5, 10, 20]
+                , limits: [10, 20]
 
             }
         });

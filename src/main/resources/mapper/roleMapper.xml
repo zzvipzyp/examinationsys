@@ -11,4 +11,23 @@
     <select id="findAllRoles" resultMap="roleMap">
         select * from t_role
     </select>
+
+    <select id="getAccessedResources" parameterType="int" resultMap="com.xct.examinationsys.dao.ResourceDao.resourceMap">
+        select p.resource_id, r.resource_name, r.resource_type, r.resource_url, r.parent_id
+        from t_permission p
+        inner join t_resource r
+        on p.resource_id=r.resource_id
+        where p.role_id = #{roleId}
+    </select>
+
+    <update id="authorise" parameterType="list">
+        insert into t_permission (role_id, resource_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId}, #{item.resourceId})
+        </foreach>
+    </update>
+
+    <delete id="clearRolePermission" parameterType="int">
+        delete from t_permission where role_id=#{roleId}
+    </delete>
 </mapper>
