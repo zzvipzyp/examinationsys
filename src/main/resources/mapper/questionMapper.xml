@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xct.examinationsys.dao.QuestionDao">
+    <resultMap id="questionMap" type="question">
+        <id column="question_id" property="questionId"></id>
+        <result column="question_name" property="questionName"></result>
+        <result column="option_a" property="optionA"></result>
+        <result column="option_b" property="optionB"></result>
+        <result column="option_c" property="optionC"></result>
+        <result column="option_d" property="optionD"></result>
+        <result column="answer" property="answer"></result>
+        <result column="answer_detail" property="answerDetail"></result>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="type_id" property="typeId"></result>
+        <result column="type_name" property="typeName"></result>
+        <result column="difficulty" property="difficulty"></result>
+        <result column="remark" property="remark"></result>
+        <result column="score" property="score"></result>
+    </resultMap>
+    <select id="findAllQuestions" parameterType="question" resultMap="questionMap">
+        select q.*, qt.type_name, c.course_name from t_question q
+        join t_question_type qt
+        on q.type_id=qt.type_id
+        join t_course c
+        on q.course_id=c.course_id
+        <where>
+            <if test="questionName != null and questionName != ''">
+                and q.question_name like CONCAT('%','${questionName}','%')
+            </if>
+            <if test="typeId != null and typeId != ''">
+                and q.type_id=#{typeId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and q.course_id=#{courseId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getQuestions" parameterType="map" resultMap="questionMap">
+        select q.*, qt.type_name, c.course_name from t_question q
+        join t_question_type qt
+        on q.type_id=qt.type_id
+        join t_course c
+        on q.course_id=c.course_id
+        <where>
+            q.question_id in
+            <foreach collection="array" item="questionId" separator="," open="(" close=")">
+                #{questionId}
+            </foreach>
+        </where>
+        order by q.type_id
+    </select>
+</mapper>

@@ -2,8 +2,8 @@ package com.xct.examinationsys.controller;
 
 
 import com.github.pagehelper.Page;
-import com.xct.examinationsys.entity.User;
-import com.xct.examinationsys.service.UserService;
+import com.xct.examinationsys.entity.Exam;
+import com.xct.examinationsys.service.ExamService;
 import com.xct.examinationsys.utils.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,20 +16,20 @@ import java.util.Map;
 
 @Controller
 @ResponseBody
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/exam")
+public class ExamController {
 
     @Autowired
-    private UserService userService;
+    private ExamService examService;
 
     @RequestMapping("/list")
     @ResponseBody
-    public Map<String, Object> listUsers(Integer page, Integer limit, User user) {
+    public Map<String, Object> listExams(Integer page, Integer limit, Exam exam) {
         Map<String, Integer> pageMap = new HashMap<>();
         pageMap.put("page", page);
         pageMap.put("limit", limit);
 
-        List<User> list = userService.findAllUsers(pageMap, user);
+        List<Exam> list = examService.findAllExams(pageMap, exam);
 
         long total = ((Page) list).getTotal();
 

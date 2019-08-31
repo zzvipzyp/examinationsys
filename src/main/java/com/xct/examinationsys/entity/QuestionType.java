@@ -6,9 +6,9 @@ import lombok.Data;
  * 题目类型
  */
 @Data
-public class Type {
-    private int typeid;
-    private String typename;
+public class QuestionType {
+    private int typeId;
+    private String typeName;
     private int score;
     private String remark;
 }

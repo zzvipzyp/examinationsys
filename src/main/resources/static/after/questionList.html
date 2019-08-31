@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -9,50 +9,50 @@
 </head>
 <body class="layui-layout-body">
 <div style="height: 70px;text-align: center; background-color: #C8EBFA;">
-    <h1 style="text-align: center;padding-top: 20px">用户管理</h1>
+    <h1 style="text-align: center;padding-top: 20px">试题管理</h1>
 </div>
 
 <div class="layui-form searchDiv">
     <div class="layui-form-item" style="margin-left: 350px">
-        <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="userId" name="userId" placeholder="学工号">
-        </div>
-        <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="userName" name="userName" placeholder="用户名">
-        </div>
 
         <div class="layui-input-inline">
-            <select name="roleId" id="roleId">
-                <option value="">选择身份</option>
-                <option value=1>考生</option>
-                <option value=2>教师</option>
-                <option value=3>管理员</option>
+            <input type="text" class="layui-input" id="questionName" name="questionName" placeholder="题干名称">
+        </div>
+        <div class="layui-input-inline">
+            <select name="typeId" id="typeId">
+                <option value="">题目类型</option>
             </select>
         </div>
-        <!--<div class="layui-input-inline">
-            <select name="courseId" id="course">
-                <option value="" selected="">&#45;&#45;请选择课程&#45;&#45;</option>
+        <div class="layui-input-inline">
+            <select name="courseId" id="courseId">
+                <option value="">科目</option>
             </select>
-        </div>-->
+        </div>
 
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload"
-            style="height:38px">
+                style="height:38px">
             <i class="layui-icon layui-icon-search"></i>
         </button>
     </div>
+    <button type="button" class="layui-btn" id="test3">
+        <i class="layui-icon"></i>导入Excel文件
+    </button>
 </div>
-
 <table class="layui-hide" id="test" lay-filter="test"></table>
-
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
+
         <div class="layui-table-tool-temp">
             <div class="layui-inline" lay-event="add">
                 <i class="layui-icon layui-icon-add-1"></i>
             </div>
-            <div class="layui-inline" lay-event="delete">
-                <i class="layui-icon layui-icon-delete"><span id="delNum"></span></i>
+<!--            <div class="layui-inline" lay-event="import">-->
+<!--                <button type="button" class="layui-btn" id="test3"><i class="layui-icon"></i>导入Excel文件</button>-->
+<!--            </div>-->
+            <div class="layui-inline" lay-event="import">
+                <i class="layui-icon layui-icon-upload-circle"></i>
             </div>
+
         </div>
     </div>
 </script>
@@ -89,24 +89,29 @@
 </script>
 
 <script>
-    layui.use('table', function(){
+    layui.use('table',function(){
         var table = layui.table;
         table.render({
-            id: "userTable"
+            id: "questionTable"
             ,elem: '#test'
-            ,url:'../user/list'
+            ,url:'../question/list'
             ,toolbar: '#toolbarDemo'
-            ,title: '用户数据表'
+            ,title: '试题数据表'
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                ,{field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'}
-                ,{field:'userName', title:'用户名',  edit: 'text', width: 150}
-                ,{field:'userId', title:'工号',  edit: 'text', width: 150, sort: true}
-                ,{field:'roleName', title:'身份',  edit: 'text', width: 150, sort: true}
-                ,{field:'userState', title:'状态',sort: true,width: 150}
-                ,{field:'email', title:'邮箱', width: 200}
-                ,{field:'telephone', title:'联系方式', width: 150}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                ,{field:'questionId', title:'题目编号',  edit: 'text', width: 100}
+                ,{field:'questionName', title:'题干',  edit: 'text', width: 150}
+                ,{field:'typeName', title:'题目类型', width: 100, sort: true}
+                ,{field:'optionA', title:'选项A',  edit: 'text', width: 150}
+                ,{field:'optionB', title:'选项B',  edit: 'text', width: 150}
+                ,{field:'optionC', title:'选项C',width: 150}
+                ,{field:'optionD', title:'选项D', width: 150}
+                ,{field:'answer', title:'答案', width: 150}
+                ,{field:'answerDetail', title:'详解', width: 150}
+                ,{field:'courseName', title:'科目', width: 100}
+                ,{field:'difficulty', title:'难度', width: 100, sort: true}
+                ,{field:'remark', title:'说明', width: 150}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 100}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -123,7 +128,6 @@
         //头工具栏事件
         table.on('toolbar(test)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
-            displaySelectedNum(checkStatus.data.length);
             switch(obj.event){
                 case 'add':
                     layer.open({
@@ -148,8 +152,8 @@
                         t.reload('videoTable');// 重新加载页面
                     });
 
-                    // console.log(checkStatus.data); //获取选中行的数据
-                    // console.log(checkStatus.data.length); //获取选中行数量，可作为是否有选中行的条件
+                // console.log(checkStatus.data); //获取选中行的数据
+                // console.log(checkStatus.data.length); //获取选中行数量，可作为是否有选中行的条件
 
             }
         });
@@ -176,14 +180,14 @@
         var active = {
             reload: function(){
                 //执行重载
-                table.reload('userTable', {
+                table.reload('questionTable', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: { // 额外需要提交的参数\
-                        userName: $("#userName").val(),
-                        userId:$("#userId").val(),
-                        roleId:$("#roleId").val()
+                        questionName: $("#questionName").val(),
+                        typeId:$("#typeId").val(),
+                        courseId: $("#courseId").val()
                     }
                 });
             }
@@ -195,37 +199,63 @@
         });
     });
 </script>
+<script>
+    layui.use('upload', function importExcel(){
+        var upload = layui.upload;
 
+        //执行上传
+        var uploadInst = upload.render({
+            elem: '#test3' //绑定元素
+            ,url: '../question/import' //上传接口
+            ,method: 'POST'
+            ,accept: 'file'
+            ,before: function(obj){
+                layer.load();
+            }
+            ,done: function(res){//上传完毕回调
+                layer.closeAll('loading');
+                var result = '';
+
+                for(var i=0; i<res.length; i++){
+                    result = result + res[i].nsrsbh+"="+res[i].container+"\n";
+                }
+
+                $("#result").html(result);
+            }
+            ,error: function(){//请求异常回调
+                layer.closeAll('loading');
+                layer.msg('网络异常，请稍后重试！');
+            }
+        });
+    });
+</script>
 <!--<%&#45;&#45;ajax请求加载页面下拉框内容&#45;&#45;%>-->
 <script type="text/javascript">
-    /*$(function () {
+    $(function () {
         $.ajax({
-            url: "../speaker/list.do?page=1&limit=65536",
+            url: "../questionType/list?page=1&limit=65536",
             dataType: "json",
-            type: "get",
+            type: "post",
             success: function(returnData) {
                 $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.id + ">" + item.name + "</option>";
-                    $("#speaker").append(html);
+                    var html = "<option value=" + item.typeId + ">" + item.typeName + "</option>";
+                    $("#typeId").append(html);
                 })
             }
         });
         $.ajax({
-            url: "../course/list.do?page=1&limit=65536",
+            url: "../course/list?page=1&limit=65536",
             dataType: "json",
             type: "get",
             success: function(returnData) {
                 $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.id + ">" + item.title + "</option>";
-                    $("#course").append(html);
+                    var html = "<option value=" + item.courseId + ">" + item.courseName + "</option>";
+                    $("#courseId").append(html);
                 })
             }
         });
 
-    });*/
-    function displaySelectedNum(n) {
-        $("#delNum").html(n);
-    }
+    });
 </script>
 </body>
 </html>

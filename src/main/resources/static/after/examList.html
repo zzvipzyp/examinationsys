@@ -9,32 +9,26 @@
 </head>
 <body class="layui-layout-body">
 <div style="height: 70px;text-align: center; background-color: #C8EBFA;">
-    <h1 style="text-align: center;padding-top: 20px">用户管理</h1>
+    <h1 style="text-align: center;padding-top: 20px">考试记录</h1>
 </div>
 
 <div class="layui-form searchDiv">
     <div class="layui-form-item" style="margin-left: 350px">
         <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="examName" name="examName" placeholder="考试名称">
+        </div>
+        <div class="layui-input-inline">
             <input type="text" class="layui-input" id="userId" name="userId" placeholder="学工号">
         </div>
-        <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="userName" name="userName" placeholder="用户名">
-        </div>
 
         <div class="layui-input-inline">
-            <select name="roleId" id="roleId">
-                <option value="">选择身份</option>
-                <option value=1>考生</option>
-                <option value=2>教师</option>
-                <option value=3>管理员</option>
+            <input type="text" class="layui-input" id="paperName" name="paperName" placeholder="试卷名称">
+        </div>
+        <div class="layui-input-inline">
+            <select name="courseId" id="courseId">
+                <option value="">科目</option>
             </select>
         </div>
-        <!--<div class="layui-input-inline">
-            <select name="courseId" id="course">
-                <option value="" selected="">&#45;&#45;请选择课程&#45;&#45;</option>
-            </select>
-        </div>-->
-
         <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload"
             style="height:38px">
             <i class="layui-icon layui-icon-search"></i>
@@ -92,21 +86,22 @@
     layui.use('table', function(){
         var table = layui.table;
         table.render({
-            id: "userTable"
+            id: "examTable"
             ,elem: '#test'
-            ,url:'../user/list'
+            ,url:'../exam/list'
             ,toolbar: '#toolbarDemo'
-            ,title: '用户数据表'
+            ,title: '考试记录'
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
                 ,{field:'xuhao', title:'序号',  fixed: 'left', width: 60, type: 'numbers'}
-                ,{field:'userName', title:'用户名',  edit: 'text', width: 150}
-                ,{field:'userId', title:'工号',  edit: 'text', width: 150, sort: true}
-                ,{field:'roleName', title:'身份',  edit: 'text', width: 150, sort: true}
-                ,{field:'userState', title:'状态',sort: true,width: 150}
-                ,{field:'email', title:'邮箱', width: 200}
-                ,{field:'telephone', title:'联系方式', width: 150}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo'}
+                ,{field:'userName', title:'考生姓名',  edit: 'text', width: 150}
+                ,{field:'courseName', title:'科目',  edit: 'text', width: 150}
+                ,{field:'paperName', title:'试卷',  edit: 'text', width: 150, sort: true}
+                ,{field:'beginTime', title:'开始时间',  edit: 'text', width: 2000, sort: true}
+                ,{field:'endTime', title:'结束时间',sort: true,width: 200}
+                ,{field:'score', title:'得分', width: 100}
+                ,{field:'remark', title:'备注', width: 200}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 100}
             ]]
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -176,14 +171,15 @@
         var active = {
             reload: function(){
                 //执行重载
-                table.reload('userTable', {
+                table.reload('examTable', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
                     ,where: { // 额外需要提交的参数\
-                        userName: $("#userName").val(),
+                        examName: $("#examName").val(),
                         userId:$("#userId").val(),
-                        roleId:$("#roleId").val()
+                        paperName:$("#paperName"),
+                        courseId:$("#courseId").val()
                     }
                 });
             }
@@ -198,31 +194,17 @@
 
 <!--<%&#45;&#45;ajax请求加载页面下拉框内容&#45;&#45;%>-->
 <script type="text/javascript">
-    /*$(function () {
-        $.ajax({
-            url: "../speaker/list.do?page=1&limit=65536",
-            dataType: "json",
-            type: "get",
-            success: function(returnData) {
-                $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.id + ">" + item.name + "</option>";
-                    $("#speaker").append(html);
-                })
-            }
-        });
-        $.ajax({
-            url: "../course/list.do?page=1&limit=65536",
-            dataType: "json",
-            type: "get",
-            success: function(returnData) {
-                $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.id + ">" + item.title + "</option>";
-                    $("#course").append(html);
-                })
-            }
-        });
-
-    });*/
+    $.ajax({
+        url: "../course/list?page=1&limit=65536",
+        dataType: "json",
+        type: "get",
+        success: function(returnData) {
+            $(returnData.data).each(function (index, item) {
+                var html = "<option value=" + item.courseId + ">" + item.courseName + "</option>";
+                $("#courseId").append(html);
+            })
+        }
+    });
     function displaySelectedNum(n) {
         $("#delNum").html(n);
     }

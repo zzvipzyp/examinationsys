@@ -2,36 +2,13 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <link rel="stylesheet" href="../layui/css/layui.css" />
-    <script type="text/javascript" src="../layui/layui.js" ></script>
-    <script type="text/javascript" src="../js/jquery-1.12.2.min.js" ></script>
-
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+    <script type="text/javascript" src="../layui/layui.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
 </head>
 <body class="layui-layout-body">
 <div style="height: 70px;text-align: center; background-color: #C8EBFA;">
-    <h1 style="text-align: center;padding-top: 20px">试题管理</h1>
-</div>
-<div class="layui-form searchDiv">
-    <div class="layui-form-item" style="margin-left: 350px">
-        <div class="layui-input-inline">
-            <input type="text" class="layui-input" id="questionName" name="questionName" placeholder="题干名称">
-        </div>
-        <div class="layui-input-inline">
-            <select name="typeId" id="typeId">
-                <option value="">题目类型</option>
-            </select>
-        </div>
-        <div class="layui-input-inline">
-            <select name="courseId" id="courseId">
-                <option value="">科目</option>
-            </select>
-        </div>
-
-        <button type="button" class="layui-btn layui-btn-normal layui-btn-sm" data-type="reload"
-                style="height:38px">
-            <i class="layui-icon layui-icon-search"></i>
-        </button>
-    </div>
+    <h1 style="text-align: center;padding-top: 20px">试题分类管理</h1>
 </div>
 
 <table class="layui-hide" id="test" lay-filter="test"></table>
@@ -81,31 +58,23 @@
 </script>
 
 <script>
-    layui.use('table', function(){
+    layui.use('table', function () {
         var table = layui.table;
         table.render({
-            id: "questionTable"
-            ,elem: '#test'
-            ,url:'../question/list'
-            ,toolbar: '#toolbarDemo'
-            ,title: '试题数据表'
-            ,cols: [[
+            id: "questionTypeTable"
+            , elem: '#test'
+            , url: '../questionType/list'
+            , toolbar: '#toolbarDemo'
+            , title: '试题分类列表'
+            , cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                ,{field:'questionId', title:'题目编号',  edit: 'text', width: 100}
-                ,{field:'questionName', title:'题干',  edit: 'text', width: 150}
-                ,{field:'typeName', title:'题目类型', width: 100, sort: true}
-                ,{field:'optionA', title:'选项A',  edit: 'text', width: 150}
-                ,{field:'optionB', title:'选项B',  edit: 'text', width: 150}
-                ,{field:'optionC', title:'选项C',width: 150}
-                ,{field:'optionD', title:'选项D', width: 150}
-                ,{field:'answer', title:'答案', width: 150}
-                ,{field:'answerDetail', title:'详解', width: 150}
-                ,{field:'courseName', title:'科目', width: 100}
-                ,{field:'difficulty', title:'难度', width: 100, sort: true}
-                ,{field:'remark', title:'说明', width: 150}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width: 100}
+                , {field: 'xuhao', title: '序号', fixed: 'left', width: 60, type: 'numbers'}
+                , {field: 'typeName', title: '类型名称', width: 100, sort: true}
+                , {field: 'score', title: '默认分值', width: 150}
+                , {field: 'remark', title: '说明', width: 300}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo'}
             ]]
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+            , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
                 , groups: 3 //只显示 1 个连续页码
@@ -118,10 +87,10 @@
         });
 
         //头工具栏事件
-        table.on('toolbar(test)', function(obj){
+        table.on('toolbar(test)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             displaySelectedNum(checkStatus.data.length);
-            switch(obj.event){
+            switch (obj.event) {
                 case 'add':
                     layer.open({
                         type: 2 //此处以iframe举例
@@ -139,7 +108,7 @@
                     checkStatus.data.forEach(function (n) {
                         delList.push(n.id);
                     });
-                    layer.confirm('确认要删除所选中的行吗？',function(index){
+                    layer.confirm('确认要删除所选中的行吗？', function (index) {
                         submitdata(delList);
                         var t = layui.table;
                         t.reload('videoTable');// 重新加载页面
@@ -152,15 +121,15 @@
         });
 
         //监听行工具事件
-        table.on('tool(test)', function(obj){
+        table.on('tool(test)', function (obj) {
             var data = obj.data;
-            if(obj.event === 'del'){
-                layer.confirm('真的删除行么', function(index){
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
                     submitdata(data.id);
                     var t = layui.table;
                     t.reload('videoTable');// 重新加载页面
                 });
-            } else if(obj.event === 'edit'){
+            } else if (obj.event === 'edit') {
                 layer.open({
                     type: 2 //此处以iframe举例
                     , title: '修改视频信息'
@@ -171,58 +140,27 @@
         });
 
         var active = {
-            reload: function(){
+            reload: function () {
                 //执行重载
-                table.reload('questionTable', {
+                table.reload('questionTypeTable', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
-                    ,where: { // 额外需要提交的参数\
+                    , where: { // 额外需要提交的参数\
                         questionName: $("#questionName").val(),
-                        typeId:$("#typeId").val(),
+                        typeId: $("#typeId").val(),
                         courseId: $("#courseId").val()
                     }
                 });
             }
         };
 
-        $('.searchDiv .layui-btn').on('click', function(){
+        $('.searchDiv .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
     });
 </script>
 
-<!--<%&#45;&#45;ajax请求加载页面下拉框内容&#45;&#45;%>-->
-<script type="text/javascript">
-    $(function () {
-        $.ajax({
-            url: "../questionType/list?page=1&limit=65536",
-            dataType: "json",
-            type: "post",
-            success: function(returnData) {
-                $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.typeId + ">" + item.typeName + "</option>";
-                    $("#typeId").append(html);
-                })
-            }
-        });
-        $.ajax({
-            url: "../course/list?page=1&limit=65536",
-            dataType: "json",
-            type: "get",
-            success: function(returnData) {
-                $(returnData.data).each(function (index, item) {
-                    var html = "<option value=" + item.courseId + ">" + item.courseName + "</option>";
-                    $("#courseId").append(html);
-                })
-            }
-        });
-
-    });
-    function displaySelectedNum(n) {
-        $("#delNum").html(n);
-    }
-</script>
 </body>
 </html>
