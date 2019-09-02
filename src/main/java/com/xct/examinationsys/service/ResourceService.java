@@ -14,5 +14,5 @@ public interface ResourceService {
 
     void updateResource(Resource resource);
 
-    void delete(int id);
+    void delete(int[] id);
 }

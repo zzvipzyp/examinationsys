@@ -18,7 +18,7 @@ public class ExcelUtils {
         boolean ret = isXls(fileName);
 
         Workbook workbook = null;
-        if(ret == true){
+        if(ret){
             workbook = new HSSFWorkbook(inputStream);
         }else{
             workbook = new XSSFWorkbook(inputStream);

@@ -8,7 +8,7 @@ import java.util.Map;
 public interface UserService {
     List<User> findAllUsers(Map<String, Integer> pageMap, User user);
 
-    User selectUser(Integer id);
+    User selectUser(String id);
 
     void addUser(User user);
 

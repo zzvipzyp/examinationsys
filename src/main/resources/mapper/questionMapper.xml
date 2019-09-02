@@ -54,4 +54,33 @@
         </where>
         order by q.type_id
     </select>
+
+    <insert id="bathInsert" parameterType="list">
+        insert into t_question (
+        question_name,
+        option_a,
+        option_b,
+        option_c,
+        option_d,
+        answer,
+        answer_detail,
+        course_id,
+        type_id,
+        difficulty,
+        remark)
+        values
+        <foreach collection="list" separator="," item="question">
+            (#{question.questionName},
+            #{question.optionA},
+            #{question.optionB},
+            #{question.optionC},
+            #{question.optionD},
+            #{question.answer},
+            #{question.answerDetail},
+            #{question.courseId},
+            #{question.typeId},
+            #{question.difficulty},
+            #{question.remark})
+        </foreach>
+    </insert>
 </mapper>

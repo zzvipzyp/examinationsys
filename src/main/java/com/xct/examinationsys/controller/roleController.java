@@ -2,6 +2,7 @@ package com.xct.examinationsys.controller;
 
 
 import com.github.pagehelper.Page;
+import com.xct.examinationsys.common.JsonResult;
 import com.xct.examinationsys.entity.Resource;
 import com.xct.examinationsys.entity.Role;
 import com.xct.examinationsys.service.ResourceService;
@@ -11,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
-@ResponseBody
+@RestController
 @RequestMapping("/role")
 public class roleController {
 
@@ -58,5 +59,30 @@ public class roleController {
         resultMap.put("allResources", allResources);
         resultMap.put("roleResources", roleResources);
         return resultMap;
+    }
+
+    @RequestMapping("/query")
+    public JsonResult<Object> queryRole(Integer roleId) {
+        if (roleId == null) {
+            return new JsonResult<Object>(0, "ID为空");
+        }
+
+        return new JsonResult<>(1, roleService.selectRole(roleId));
+    }
+
+    @RequestMapping(value = "/addOrUpdate")
+    public JsonResult<String> addOrUpdateRole(Role role) {
+        if (role.getRoleId() == null) {
+            roleService.addRole(role);
+        } else {
+            roleService.updateRole(role);
+        }
+        return new JsonResult<>(1, "保存成功");
+    }
+
+    @RequestMapping("/delete")
+    public JsonResult<String> delete(int[] id) {
+        roleService.delete(id);
+        return new JsonResult<>(1, "删除成功");
     }
 }

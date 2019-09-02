@@ -17,4 +17,6 @@ public interface QuestionDao {
     void delete(int[] id);
 
     List<Question> getQuestions(String[] questionIds);
+
+    void bathInsert(List<Question> questionList);
 }

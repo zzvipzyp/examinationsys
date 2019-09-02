@@ -10,6 +10,8 @@ public interface QuestionTypeDao {
 
     QuestionType selectQuestionTypeById(Integer valueOf);
 
+    QuestionType selectQuestionTypeByName(String typeName);
+
     void addQuestionType(QuestionType questionType);
 
     void updateQuestionType(QuestionType questionType);

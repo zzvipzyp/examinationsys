@@ -7,8 +7,8 @@ import lombok.Data;
  */
 @Data
 public class QuestionType {
-    private int typeId;
+    private Integer typeId;
     private String typeName;
-    private int score;
+    private Integer score;
     private String remark;
 }

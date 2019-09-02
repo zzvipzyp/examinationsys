@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectUser(Integer id) {
+    public User selectUser(String id) {
         return userDao.selectUserById(id);
     }
 

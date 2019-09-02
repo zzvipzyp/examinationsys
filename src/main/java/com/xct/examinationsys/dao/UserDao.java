@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserDao {
     List<User> findAllUsers(User user);
 
-    User selectUserById(Integer valueOf);
+    User selectUserById(String userId);
 
     void addUser(User user);
 

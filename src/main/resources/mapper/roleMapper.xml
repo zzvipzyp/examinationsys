@@ -20,6 +20,8 @@
         where p.role_id = #{roleId}
     </select>
 
+
+
     <update id="authorise" parameterType="list">
         insert into t_permission (role_id, resource_id) values
         <foreach collection="list" item="item" separator=",">

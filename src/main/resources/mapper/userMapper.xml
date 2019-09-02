@@ -40,9 +40,35 @@
             <if test="roleId != null and roleId != ''">
                 and u.role_id=#{roleId}
             </if>
-<!--            <if test="courseId != null and courseId != ''">-->
-<!--                and course_id=#{courseId}-->
-<!--            </if>-->
         </where>
     </select>
+
+    <select id="selectUserById" parameterType="string" resultMap="userMap">
+        SELECT
+        u.user_id,
+        u.user_name,
+        u.role_id,
+        u.user_state_id ,
+        u.email,
+        u.telephone,
+        r.role_name,
+        us.user_state_name
+        FROM
+        t_user u
+        INNER JOIN t_role r ON u.role_id = r.role_id
+        INNER JOIN t_user_state us ON u.user_state_id=us.user_sate_id
+        where u.user_Id=#{_parameter}
+    </select>
+
+    <update id="updateUser" parameterType="user">
+        
+    </update>
+
+    <insert id="addUser" parameterType="user">
+        
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        
+    </delete>
 </mapper>

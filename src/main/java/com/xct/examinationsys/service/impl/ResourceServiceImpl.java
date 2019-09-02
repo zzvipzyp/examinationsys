@@ -38,7 +38,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void delete(int id) {
-        resourceDao.delete(id);
+    public void delete(int[] ids) {
+        resourceDao.delete(ids);
     }
 }

@@ -8,6 +8,8 @@ import java.util.List;
 public interface CourseDao {
     List<Course> findAllCourses(Course course);
 
+    Course selectCourseByName(String courseName);
+
     Course selectCourseById(Integer valueOf);
 
     void addCourse(Course course);

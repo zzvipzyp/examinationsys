@@ -2,6 +2,7 @@ package com.xct.examinationsys.controller;
 
 
 import com.github.pagehelper.Page;
+import com.xct.examinationsys.common.JsonResult;
 import com.xct.examinationsys.entity.Paper;
 import com.xct.examinationsys.entity.Question;
 import com.xct.examinationsys.service.PaperService;
@@ -10,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
-@ResponseBody
+@RestController
 @RequestMapping("/paper")
 public class PaperController {
 
@@ -48,4 +49,30 @@ public class PaperController {
     public Paper getPaperById(Integer paperId) {
         return paperService.getPaperById(paperId);
     }
+
+    @RequestMapping("/query")
+    public JsonResult<Object> queryPaper(Integer paperId) {
+        if (paperId == null) {
+            return new JsonResult<Object>(0, "ID为空");
+        }
+
+        return new JsonResult<>(1, paperService.selectPaper(paperId));
+    }
+
+    @RequestMapping(value = "/addOrUpdate")
+    public JsonResult<String> addOrUpdatePaper(Paper paper) {
+        if (paper.getPaperId() == null || paper.getPaperId().equals("")) {
+            paperService.addPaper(paper);
+        } else {
+            paperService.updatePaper(paper);
+        }
+        return new JsonResult<>(1, "保存成功");
+    }
+
+    @RequestMapping("/delete")
+    public JsonResult<String> delete(int[] id) {
+        paperService.delete(id);
+        return new JsonResult<>(1, "删除成功");
+    }
+
 }

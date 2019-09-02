@@ -1,8 +1,11 @@
 package com.xct.examinationsys.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.xct.examinationsys.dao.CourseDao;
 import com.xct.examinationsys.dao.QuestionDao;
+import com.xct.examinationsys.dao.QuestionTypeDao;
 import com.xct.examinationsys.entity.Question;
+import com.xct.examinationsys.entity.QuestionType;
 import com.xct.examinationsys.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,10 @@ import java.util.Map;
 public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private QuestionDao questionDao;
+    @Autowired
+    private CourseDao courseDao;
+    @Autowired
+    private QuestionTypeDao questionTypeDao;
 
     @Override
     public List<Question> findAllQuestions(Map<String, Integer> pageMap, Question question) {
@@ -40,5 +47,15 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public void delete(int[] id) {
         questionDao.delete(id);
+    }
+
+    @Override
+    public void bathSave(List<Question> questionList) {
+        // 设置所有导入的题目的typeId和courseId
+        for (Question q : questionList) {
+            q.setCourseId(courseDao.selectCourseByName(q.getCourseName()).getCourseId());
+            q.setTypeId(questionTypeDao.selectQuestionTypeByName(q.getTypeName()).getTypeId());
+        }
+        questionDao.bathInsert(questionList);
     }
 }

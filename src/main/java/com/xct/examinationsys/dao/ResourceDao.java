@@ -14,5 +14,5 @@ public interface ResourceDao {
 
     void updateResource(Resource resource);
 
-    void delete(int id);
+    void delete(int[] ids);
 }
