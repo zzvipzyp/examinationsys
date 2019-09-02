@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Question {
-    private int questionId;
-    private String quesName;
+    private Integer questionId;
+    private String questionName;
     private String optionA;
     private String optionB;
     private String optionC;
@@ -13,9 +13,12 @@ public class Question {
     private String answer;
     private String answerDetail;
     private String userAnswer;
-    private String courseId;
-    private String typeId;
-    private int difficulty;
+    private Integer courseId;
+    private String courseName;
+    private Integer typeId;
+    private String typeName;
+    private Integer difficulty;
     private String remark;
     private String gradeId;
+    private Integer score;
 }

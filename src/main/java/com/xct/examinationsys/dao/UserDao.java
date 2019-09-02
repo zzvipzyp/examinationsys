@@ -1,7 +1,21 @@
 package com.xct.examinationsys.dao;
 
+
 import com.xct.examinationsys.entity.User;
-import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+public interface UserDao {
+    List<User> findAllUsers(User user);
+
+    User selectUserById(String userId);
+
+    void addUser(User user);
+
+    void updateUser(User user);
+
+    void delete(int[] id);
+
 
 /**
  * @author ZZzz
@@ -10,7 +24,6 @@ import org.springframework.stereotype.Repository;
  * @description TODO
  * @date 2019/8/29 20:09
  */
-public interface UserDao {
 
     /**
      * 用户登录

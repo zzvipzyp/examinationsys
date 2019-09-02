@@ -2,14 +2,19 @@ package com.xct.examinationsys.service;
 
 import com.xct.examinationsys.entity.User;
 
-/**
- * @author ZZzz
- * @version 1.0
- * @className UserService
- * @description TODO
- * @date 2019/8/29 20:21
- */
+import java.util.List;
+import java.util.Map;
+
 public interface UserService {
+    List<User> findAllUsers(Map<String, Integer> pageMap, User user);
+
+    User selectUser(String id);
+
+    void addUser(User user);
+
+    void updateUser(User user);
+
+    void delete(int[] id);
 
     /**
      * 用户登录

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/user/*")
+@WebFilter(urlPatterns = "/User/*")
 public class TokenFilter implements Filter {
     @Autowired
     private StringRedisTemplate redisTemplate;

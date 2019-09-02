@@ -16,5 +16,6 @@ public class AnswerRecord {
     private Integer questionId;
     private Integer typeId;
     private String type;
-
+    private String result;
+    private String state;
 }

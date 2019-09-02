@@ -5,7 +5,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/user/*")
+@WebFilter(urlPatterns = "/User/*")
 public class CrossFilter implements Filter {
     @Override
     public void destroy() {

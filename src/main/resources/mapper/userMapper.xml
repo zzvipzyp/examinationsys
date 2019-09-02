@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xct.examinationsys.dao.UserDao">
+    <resultMap id="userMap" type="user">
+        <id column="user_id" property="userId"></id>
+        <result column="user_name" property="userName"></result>
+        <result column="user_pwd" property="userPwd"></result>
+        <result column="role_id" property="roleId"></result>
+        <result column="role_name" property="roleName"></result>
+        <result column="user_state_id" property="userStateId"></result>
+        <result column="user_state_name" property="userState"></result>
+        <result column="email" property="email"></result>
+        <result column="telephone" property="telephone"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+    <select id="findAllUsers" parameterType="user" resultMap="userMap">
+        SELECT
+        u.user_id,
+        u.user_name,
+        u.role_id,
+        u.user_state_id ,
+        u.email,
+        u.telephone,
+        r.role_name,
+        us.user_state_name
+        FROM
+        t_user u
+        INNER JOIN t_role r ON u.role_id = r.role_id
+        INNER JOIN t_user_state us ON u.user_state_id=us.user_sate_id
+        <where>
+            <if test="userName != null and userName != ''">
+                and u.user_name like CONCAT('%','${userName}','%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and u.user_Id like CONCAT('%','${userId}','%')
+            </if>
+            <if test="roleId != null and roleId != ''">
+                and u.role_id=#{roleId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserById" parameterType="string" resultMap="userMap">
+        SELECT
+        u.user_id,
+        u.user_name,
+        u.role_id,
+        u.user_state_id ,
+        u.email,
+        u.telephone,
+        r.role_name,
+        us.user_state_name
+        FROM
+        t_user u
+        INNER JOIN t_role r ON u.role_id = r.role_id
+        INNER JOIN t_user_state us ON u.user_state_id=us.user_sate_id
+        where u.user_Id=#{_parameter}
+    </select>
+
+    <update id="updateUser" parameterType="user">
+        
+    </update>
+
+    <insert id="addUser" parameterType="user">
+        
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        
+    </delete>
+</mapper>

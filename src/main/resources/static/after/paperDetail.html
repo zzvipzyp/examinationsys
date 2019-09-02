@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../js/vue.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <div style="text-align: center">
+        <h1>{{paper.paperName}}</h1>
+    </div>
+
+<div>考试总分：{{paper.score}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    考试时间：{{paper.allowTime}}分钟</div>
+<div>
+    <ol>
+        <li v-for="question in questionList">
+            <div>{{question.questionName}}</div>
+            <div>{{question.optionA}}</div>
+            <div>{{question.optionB}}</div>
+            <div>{{question.optionC}}</div>
+            <div>{{question.optionD}}</div>
+            <div>答案： {{question.answer}}</div>
+        </li>
+    </ol>
+</div>
+
+</div>
+<script type="text/javascript">
+    // 创建Vue对象
+    var vue = new Vue({
+        el : "#app", // 针对指定标签使用vue的语法
+        data: {  // 定义的数据
+            paper: {},
+            questionList: {}
+        },
+        methods: {
+            loadData: function () {
+                var _this = this;
+                $.ajax({
+                    type : "get",
+                    url : "../paper/getPaperById" + window.location.search,
+                    dataType : "json",
+                    success : function(data){
+                        _this.paper = data;
+                    }
+                });
+                $.ajax({
+                    type : "get",
+                    url : "../paper/getQuestions" + window.location.search,
+                    dataType : "json",
+                    success : function(data){
+                        _this.questionList = data;
+                    }
+                });
+
+            }
+        },
+        created:function(){
+            this.loadData();
+        }
+
+    })
+
+</script>
+
+</body>
+</html>

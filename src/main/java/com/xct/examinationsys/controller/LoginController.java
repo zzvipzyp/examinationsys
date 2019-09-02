@@ -33,7 +33,7 @@ public class LoginController {
     private StringRedisTemplate redisTemplate;
 
 
-    @RequestMapping("/user/login.do")
+    @RequestMapping("/User/login.do")
     public Map<String, Object> login(String userName, String userPwd){
         Map<String, Object> map = new HashMap<>();
         //调用service进行查询用户的信息
@@ -54,7 +54,7 @@ public class LoginController {
     }
 
 
-    @RequestMapping("/user/register.do")
+    @RequestMapping("/User/register.do")
     public JsonResult registerUser(User user) {
 
         try {

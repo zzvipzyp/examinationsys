@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xct.examinationsys.dao.PaperDao">
+    <resultMap id="paperMap" type="paper">
+        <id column="paper_id" property="paperId"></id>
+        <result column="paper_name" property="paperName"></result>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="question_id" property="questionIds"></result>
+        <result column="allow_time" property="allowTime"></result>
+        <result column="score" property="score"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+
+    <select id="findAllPapers" parameterType="paper" resultMap="paperMap">
+        select p.*, c.course_name from t_paper p
+        inner join t_course c
+        on p.course_id=c.course_id
+        <where>
+            <if test="paperName != null and paperName != ''">
+                and p.paper_name like CONCAT('%','${paperName}','%')
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and p.course_id=#{courseId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getPaperById" parameterType="int" resultMap="paperMap">
+        select p.*, c.course_name from t_paper p
+        inner join t_course c
+        on p.course_id=c.course_id
+        where p.paper_id=#{paperId}
+    </select>
+
+    <select id="findPaperById" parameterType="int" resultMap="paperMap">
+        select p.*, c.course_name from t_paper p
+        inner join t_course c
+        on p.course_id=c.course_id
+        where paper_id=#{paperId}
+    </select>
+</mapper>

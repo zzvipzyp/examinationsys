@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <base href="<%=basePath %>">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Insert title here</title>
+    <!-- 引入JQuery库 start -->
+    <script type="text/javascript" src="../js/jquery-1.12.2.min.js"></script>
+    <!-- 引入JQuery库 end -->
+    <link rel="stylesheet" href="../zTree_v3/css/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../zTree_v3/js/jquery-1.4.4.min.js"></script>
+    <script type="text/javascript" src="../zTree_v3/js/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../zTree_v3/js/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript">
+        var setting = {
+            check: {
+                enable: true,
+                chkboxType: {"Y": "p", "N": "s"}
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback:{
+                onClick: {
+                }
+            }
+        };
+        var zNodes;
+        var permissions;
+
+        // ajax请求获取菜单数据
+        $(function() {
+            $.ajax({
+                type: "GET",
+                url: "../role/getPermission" + window.location.search,
+                dataType: "json",
+                success: function (data) {
+                    zNodes = data.allResources;
+                    permissions = data.roleResources;
+                    loadeTree(setting, zNodes);
+                    initTree(permissions);
+                },
+                error: function () {
+                    alert("ajax请求异常");
+                }
+            })
+        });
+
+        var code;
+
+        function setCheck() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+                py = $("#py").attr("checked")? "p":"",
+                sy = $("#sy").attr("checked")? "s":"",
+                pn = $("#pn").attr("checked")? "p":"",
+                sn = $("#sn").attr("checked")? "s":"",
+                type = { "Y":py + sy, "N":pn + sn};
+            zTree.setting.check.chkboxType = type;
+            showCode('setting.check.chkboxType = { "Y" : "' + type.Y + '", "N" : "' + type.N + '" };');
+        }
+        function showCode(str) {
+            if (!code) code = $("#code");
+            code.empty();
+            code.append("<li>"+str+"</li>");
+        }
+        function loadeTree(setting, zNodes){
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            setCheck();
+            $("#py").bind("change", setCheck);
+            $("#sy").bind("change", setCheck);
+            $("#pn").bind("change", setCheck);
+            $("#sn").bind("change", setCheck);
+        }
+
+        function initTree(permissions) {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            for (var i = 0; i < permissions.length; i++) {
+                var node = zTree.getNodeByParam("id", permissions[i].id);
+                if(node != null) {
+                    zTree.checkNode(node, true)
+                }
+            }
+        }
+
+
+        function doSave() {
+            var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            var nodes = zTree.getCheckedNodes();
+            var tmpNode;
+            var ids = [];
+            for(var i=0; i<nodes.length; i++){
+                tmpNode = nodes[i];
+                ids.push(tmpNode.id);
+            }
+            alert(ids);
+            $.ajax({
+                type: "POST",
+                url: '../role/authorise.do' + window.location.search,
+                data: {"ids": ids},
+                traditional:true,
+                dataType:'json',
+                cache: false,
+                success: function(data){
+                    if(1 === data.result){
+                        alert('授权成功!请重新登录!');
+                        parent.location.reload();
+                        window.close();
+                    }else{
+                        alert("授权失败!");
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body >
+<div class="content_wrap">
+    <div class="zTreeDemoBackground left">
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+</div>
+<div style="">
+    <input type="button" onClick="doSave()" value="保存" class="buttonStyle" />
+    <input onClick="window.close();" class="buttonStyle" type="button" value="关闭" />
+</div>
+
+</body>
+</html>

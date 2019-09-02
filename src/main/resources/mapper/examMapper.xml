@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xct.examinationsys.dao.ExamDao">
+    <resultMap id="examMap" type="exam">
+        <id column="exam_id" property="examId"></id>
+        <id column="exam_name" property="examName"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="paper_id" property="paperId"></result>
+        <result column="course_id" property="courseId"></result>
+        <result column="course_name" property="courseName"></result>
+        <result column="begin_time" property="beginTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="score" property="score"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="paper_name" property="paperName"></result>
+        <result column="remark" property="remark"></result>
+    </resultMap>
+    <select id="findAllExams" parameterType="exam" resultMap="examMap">
+        SELECT
+        e.*,
+        u.user_name,
+        p.course_id,
+        p.paper_name,
+        c.course_name
+        FROM
+        t_exam_record e
+        INNER JOIN t_user u ON e.user_id = u.user_id
+        INNER JOIN t_paper p ON e.paper_id = p.paper_id
+        INNER JOIN t_course c ON p.course_id = c.course_id
+        <where>
+            <if test="examName != null and examName != ''">
+                and e.exam_name like CONCAT('%','${examName}','%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and e.user_id=#{userId}
+            </if>
+            <if test="paperId != null and paperId != ''">
+                and p.paper_id=#{paperId}
+            </if>
+            <if test="courseId != null and courseId != ''">
+                and p.course_id=#{courseId}
+            </if>
+        </where>
+    </select>
+</mapper>

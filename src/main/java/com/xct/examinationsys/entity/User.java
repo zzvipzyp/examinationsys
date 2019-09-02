@@ -10,13 +10,11 @@ public class User {
     private Integer gradeId;
     private String grade;
     private Integer roleId;
-    private Integer userTypeId;
-    private String userType;
+    private String roleName;
     private Integer userStateId;
     private String userState;
     private String email;
     private String telephone;
     private String address;
     private String remark;
-
 }

@@ -3,6 +3,7 @@ package com.xct.examinationsys.entity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Paper {
@@ -10,24 +11,14 @@ public class Paper {
     private String paperName;
 
     private String courseId;
-    private String course;
+    private String courseName;
 
-    private String gradeId;
-    private String grade;
+    private String questionIds;
+    private List<Question> questions;
 
-    private String userId;
-    private String user;
+    private Integer allowTime;
 
-    private String questionId;
-    private String question;
-
-    private Date beginTime;
-    private String beginTimeStr;
-    private Date endTime;
-    private String endTimeStr;
-    private String allowTime;
-
-    private String score;
+    private Integer score;
     private String paperState;
 
 }
