@@ -8,6 +8,7 @@ import java.util.Map;
 public interface ExamService {
     List<Exam> findAllExams(Map<String, Integer> pageMap, Exam exam);
 
+
     Exam selectExam(Integer id);
 
     void addExam(Exam exam);
