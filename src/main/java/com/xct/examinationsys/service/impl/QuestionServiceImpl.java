@@ -58,4 +58,9 @@ public class QuestionServiceImpl implements QuestionService {
         }
         questionDao.bathInsert(questionList);
     }
+
+    @Override
+    public void deleteOne(Integer questionId) {
+        questionDao.deleteOne(questionId);
+    }
 }

@@ -20,4 +20,6 @@ public interface PaperService {
     List<Question> getQuestions(Integer paperId);
 
     Paper getPaperById(Integer paperId);
+
+    void deleteOne(Integer paperId);
 }

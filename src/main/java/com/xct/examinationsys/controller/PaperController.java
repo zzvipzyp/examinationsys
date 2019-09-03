@@ -46,8 +46,10 @@ public class PaperController {
 
     @RequestMapping("/getPaperById")
     @ResponseBody
-    public Paper getPaperById(Integer paperId) {
-        return paperService.getPaperById(paperId);
+    public JsonResult<Paper> getPaperById(Integer paperId) {
+        Paper paper = paperService.getPaperById(paperId);
+        JsonResult<Paper> result = new JsonResult<>(1, paper);
+        return result;
     }
 
     @RequestMapping("/query")
@@ -59,7 +61,7 @@ public class PaperController {
         return new JsonResult<>(1, paperService.selectPaper(paperId));
     }
 
-    @RequestMapping(value = "/addOrUpdate")
+    @RequestMapping("/addOrUpdate")
     public JsonResult<String> addOrUpdatePaper(Paper paper) {
         if (paper.getPaperId() == null || paper.getPaperId().equals("")) {
             paperService.addPaper(paper);
@@ -75,4 +77,9 @@ public class PaperController {
         return new JsonResult<>(1, "删除成功");
     }
 
+    @RequestMapping("/deleteOne")
+    public JsonResult<String> deleteOne(Integer paperId) {
+        paperService.deleteOne(paperId);
+        return new JsonResult<>(1, "删除成功");
+    }
 }

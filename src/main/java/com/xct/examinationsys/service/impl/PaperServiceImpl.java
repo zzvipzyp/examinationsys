@@ -60,4 +60,11 @@ public class PaperServiceImpl implements PaperService {
     public Paper getPaperById(Integer paperId) {
         return paperDao.getPaperById(paperId);
     }
+
+    @Override
+    public void deleteOne(Integer paperId) {
+
+        paperDao.deleteOne(paperId);
+
+    }
 }

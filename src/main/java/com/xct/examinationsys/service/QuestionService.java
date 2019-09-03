@@ -17,4 +17,6 @@ public interface QuestionService {
     void delete(int[] id);
 
     void bathSave(List<Question> questionList);
+
+    void deleteOne(Integer questionId);
 }

@@ -96,4 +96,11 @@ public class QuestionController {
         return new JsonResult<>(1, "删除成功");
     }
 
+    @RequestMapping("/deleteOne")
+    public JsonResult<String> delete(Integer questionId) {
+        questionService.deleteOne(questionId);
+        return new JsonResult<>(1, "删除成功");
+    }
+
+
 }
